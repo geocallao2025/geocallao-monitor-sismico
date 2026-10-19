@@ -1,0 +1,1 @@
+# geocallao-monitor-sismico
