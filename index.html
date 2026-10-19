@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GeoCallao | Monitor Sísmico Integrado</title>
+<style>
+:root{--azul:#0054A4;--rojo:#E21514;--tinta:#183153;--borde:#d9e3ed;--fondo:#f4f7fb}*{box-sizing:border-box}body{margin:0;background:var(--fondo);color:var(--tinta);font-family:Arial,Helvetica,sans-serif}.contenedor{max-width:1800px;margin:auto;padding:10px}.intro{margin:0 0 15px;font-size:15px;line-height:1.5}.controles{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.opcion{border:2px solid var(--azul);border-radius:9px;background:white;color:var(--azul);padding:13px 22px;cursor:pointer;font-size:16px;font-weight:700;flex:1;min-width:180px}.opcion[aria-selected=true]{background:var(--azul);color:white}.opcion:focus-visible,.enlace:focus-visible{outline:3px solid #ffbf47;outline-offset:3px}.barra{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#fff;border:1px solid var(--borde);border-bottom:0;padding:10px 14px;border-radius:9px 9px 0 0}.barra strong{font-size:15px}.enlace{color:var(--azul);font-weight:700;text-decoration:none;font-size:13px}.enlace:hover{text-decoration:underline}.marco{background:#fff;border:1px solid var(--borde);border-radius:0 0 9px 9px;overflow:hidden}.marco iframe{display:block;width:100%;height:790px;border:0;background:#fff}.nota{margin-top:14px;padding:16px 18px;background:#eaf2fa;border-left:5px solid var(--azul);border-radius:7px;line-height:1.5;font-size:14px}.nota h2{margin:0 0 6px;font-size:16px;color:var(--azul)}.nota p{margin:0}.pie{font-size:12px;color:#52667b;margin:14px 0 0}@media(max-width:700px){.contenedor{padding:10px}.marco iframe{height:760px}.opcion{font-size:14px;padding:11px 10px}}
+</style>
+</head>
+<body>
+<main class="contenedor"><p class="intro">Seleccione la fuente para consultar su tablero de monitoreo. Se muestra un solo Dashboard a la vez, conservando el espacio disponible para mapas, indicadores y gráficos.</p>
+<div class="controles" role="tablist" aria-label="Fuente de monitoreo sísmico"><button id="tab-igp" class="opcion" role="tab" aria-selected="true" aria-controls="panel-sismico" type="button">🇵🇪 Perú — IGP</button><button id="tab-usgs" class="opcion" role="tab" aria-selected="false" aria-controls="panel-sismico" type="button">🌐 Mundo — USGS</button></div>
+<div id="panel-sismico" role="tabpanel" aria-labelledby="tab-igp"><div class="barra"><strong id="titulo-panel">Monitoreo de sismos en el Perú · IGP</strong><a id="enlace-directo" class="enlace" href="https://www.arcgis.com/apps/dashboards/635a453cba7744c08ff0d9642eca21ff" target="_blank" rel="noopener noreferrer">Abrir Dashboard en una pestaña nueva ↗</a></div><div class="marco"><iframe id="visor" title="Dashboard de sismos IGP" src="https://www.arcgis.com/apps/dashboards/635a453cba7744c08ff0d9642eca21ff" allowfullscreen loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe></div></div>
+<section class="nota" aria-label="Nota metodológica"><h2>ⓘ Nota metodológica</h2><p>Los registros sísmicos del Instituto Geofísico del Perú (IGP) y del Servicio Geológico de Estados Unidos (USGS) pueden diferir debido a la cobertura de sus redes de monitoreo, los métodos de procesamiento y los criterios de publicación. Para el monitoreo del territorio peruano se prioriza la información del IGP; el USGS complementa la consulta de eventos internacionales. Los tiempos de actualización dependen de cada fuente y del servicio de ArcGIS Online.</p></section>
+<p class="pie">Fuentes: IGP y USGS. Esta interfaz facilita la consulta de tableros existentes y no constituye un sistema oficial de alerta temprana ni sustituye los comunicados de las autoridades competentes.</p></main>
+<script>
+(function(){'use strict';
+const tableros={igp:{url:'https://www.arcgis.com/apps/dashboards/635a453cba7744c08ff0d9642eca21ff',titulo:'Monitoreo de sismos en el Perú · IGP',iframe:'Dashboard de sismos IGP'},usgs:{url:'https://www.arcgis.com/apps/dashboards/071d86a8b33548c6bc3f73f15442f84a',titulo:'Monitoreo sísmico mundial · USGS',iframe:'Dashboard de sismos USGS'}};
+const botones={igp:document.getElementById('tab-igp'),usgs:document.getElementById('tab-usgs')},visor=document.getElementById('visor'),titulo=document.getElementById('titulo-panel'),enlace=document.getElementById('enlace-directo'),panel=document.getElementById('panel-sismico');let actual='igp';
+function cambiar(tipo){if(tipo===actual)return;actual=tipo;const d=tableros[tipo];Object.keys(botones).forEach(k=>{botones[k].setAttribute('aria-selected',String(k===tipo));botones[k].tabIndex=k===tipo?0:-1});titulo.textContent=d.titulo;enlace.href=d.url;visor.title=d.iframe;visor.src=d.url;panel.setAttribute('aria-labelledby','tab-'+tipo)}
+Object.keys(botones).forEach(k=>{botones[k].addEventListener('click',()=>cambiar(k));botones[k].addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();const otro=k==='igp'?'usgs':'igp';cambiar(otro);botones[otro].focus()}})});
+})();
+</script>
+</body>
+</html>
